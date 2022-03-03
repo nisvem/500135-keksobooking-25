@@ -3,7 +3,7 @@ function getRandomFloat(min, max, num) {
   if(min < 0 || max < min ) {
     return false;
   }
-  return (Math.random() * (max - min) + min).toFixed(num);
+  return Number((Math.random() * (max - min) + min).toFixed(num));
 }
 
 function getRandom(min, max) {
@@ -14,6 +14,6 @@ function getRandom(min, max) {
 }
 
 // eslint-disable-next-line no-console
-console.log(getRandomFloat(1, 10.1, 3));
+console.log(getRandomFloat(1, 10.1, 3) + getRandomFloat(1, 10.1, 3));
 // eslint-disable-next-line no-console
 console.log(getRandom(1, 10));
