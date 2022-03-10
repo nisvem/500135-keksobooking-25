@@ -32,20 +32,24 @@ function getPrice(price) {
 }
 
 function getFeatures(features) {
-  const featuresText = document.createElement('ul');
+  const featuresBlock = document.createElement('ul');
+
+  featuresBlock.classList.add('popup__features');
 
   features.forEach((feature) => {
     const elementFeature = document.createElement('li');
     elementFeature.classList.add('popup__feature');
     elementFeature.classList.add(`popup__feature--${feature}`);
-    featuresText.appendChild(elementFeature);
+    featuresBlock.appendChild(elementFeature);
   });
 
-  return featuresText.innerHTML;
+  return featuresBlock;
 }
 
 function getPhotos(photos) {
   const photoBlock = document.createElement('div');
+
+  photoBlock.classList.add('popup__photos');
 
   photos.forEach((photo) => {
     const photoItem = document.createElement('img');
@@ -58,12 +62,11 @@ function getPhotos(photos) {
     photoBlock.appendChild(photoItem);
   });
 
-  return photoBlock.innerHTML;
+  return photoBlock;
 }
 
 function getOfferCard(offerElement) {
   const cardOfferTempate = document.querySelector('#card').content.querySelector('.popup');
-
   const cardOffer = cardOfferTempate.cloneNode(true);
 
   cardOffer.querySelector('.popup__title').textContent = offerElement.offer.title;
@@ -72,9 +75,9 @@ function getOfferCard(offerElement) {
   cardOffer.querySelector('.popup__type').textContent = getType(offerElement.offer.type);
   cardOffer.querySelector('.popup__text--capacity').textContent = getCapacity(offerElement.offer.rooms, offerElement.offer.guests);
   cardOffer.querySelector('.popup__text--time').textContent = getChek(offerElement.offer.checkin, offerElement.offer.checkout);
-  cardOffer.querySelector('.popup__features').innerHTML = getFeatures(offerElement.offer.features);
+  cardOffer.querySelector('.popup__features').replaceWith(getFeatures(offerElement.offer.features));
+  cardOffer.querySelector('.popup__photos').replaceWith(getPhotos(offerElement.offer.photos));
   cardOffer.querySelector('.popup__description').textContent = offerElement.offer.description;
-  cardOffer.querySelector('.popup__photos').innerHTML = getPhotos(offerElement.offer.photos);
   cardOffer.querySelector('.popup__avatar').src = offerElement.author.avatar;
 
   document.querySelector('#map-canvas').appendChild(cardOffer);
