@@ -2,32 +2,17 @@ function validateRoomNumber (value) {
   const capacityValue = document.querySelector('#capacity').value;
   switch(value) {
     case '1':
-      if(capacityValue === '1') {
-        return true;
-      } else {
-        return false;
-      }
+      return capacityValue === '1';
 
     case '2':
-      if(capacityValue === '1' || capacityValue === '2') {
-        return true;
-      } else {
-        return false;
-      }
+      return ['1', '2'].includes(capacityValue);
 
     case '3':
-      if(capacityValue === '1' || capacityValue === '2' || capacityValue === '3') {
-        return true;
-      } else {
-        return false;
-      }
+      return ['1', '2', '3'].includes(capacityValue);
 
     case '100':
-      if(capacityValue === '0') {
-        return true;
-      } else {
-        return false;
-      }
+      return capacityValue === '0';
+
 
     default:
       return false;
@@ -35,54 +20,31 @@ function validateRoomNumber (value) {
 }
 
 function validateRoomNumberTextError(value) {
-  switch(value) {
-    case '1':
-      return 'Только для 1 гостя';
 
-    case '2':
-      return 'Для 1 или 2 гостей';
+  const answers = {
+    '1': 'Только для 1 гостя',
+    '2': 'Для 1 или 2 гостей',
+    '3': 'Для 1, 2 или 3 гостей',
+    '100': 'Не для гостей'
+  };
 
-    case '3':
-      return 'Для 1, 2 или 3 гостей';
-
-    case '100':
-      return 'Не для гостей';
-
-    default:
-      return '';
-  }
+  return answers[value] || '';
 }
 
 function validateCapacity (value) {
   const roomNumberValue = document.querySelector('#room_number').value;
   switch(value) {
     case '1':
-      if(roomNumberValue === '1' || roomNumberValue === '2' || roomNumberValue === '3') {
-        return true;
-      } else {
-        return false;
-      }
+      return ['1', '2', '3'].includes(roomNumberValue);
 
     case '2':
-      if(roomNumberValue === '2' || roomNumberValue === '3') {
-        return true;
-      } else {
-        return false;
-      }
+      return ['2', '3'].includes(roomNumberValue);
 
     case '3':
-      if(roomNumberValue === '3') {
-        return true;
-      } else {
-        return false;
-      }
+      return roomNumberValue === '3';
 
     case '0':
-      if(roomNumberValue === '100') {
-        return true;
-      } else {
-        return false;
-      }
+      return roomNumberValue === '100';
 
     default:
       return false;
@@ -91,22 +53,14 @@ function validateCapacity (value) {
 }
 
 function validateCapacityTextError(value) {
-  switch(value) {
-    case '1':
-      return 'Нужно выбрать 1, 2 или 3 комнаты';
+  const answers = {
+    '1': 'Нужно выбрать 1, 2 или 3 комнаты',
+    '2': 'Нужно выбрать 2 или 3 комнаты',
+    '3': 'Нужно выбрать 3 комнаты',
+    '0': 'Нужно выбрать 100 комнат'
+  };
 
-    case '2':
-      return 'Нужно выбрать 2 или 3 комнаты';
-
-    case '3':
-      return 'Нужно выбрать 3 комнаты';
-
-    case '0':
-      return 'Нужно выбрать 100 комнат';
-
-    default:
-      return '';
-  }
+  return answers[value] || '';
 }
 
 const form = document.querySelector('.ad-form');
