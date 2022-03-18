@@ -1,3 +1,4 @@
+import './form_validator.js';
 
 function activateForm() {
   ['ad-form','map__filters'].forEach((className) => {
@@ -5,7 +6,7 @@ function activateForm() {
 
     block.classList.remove(`${className}--disabled`);
     block.querySelectorAll('fieldset').forEach((element) => {
-      element.disabled = true;
+      element.disabled = false;
     });
   });
 }
@@ -16,7 +17,7 @@ function deactivateForm() {
 
     block.classList.add(`${className}--disabled`);
     block.querySelectorAll('fieldset').forEach((element) => {
-      element.disabled = false;
+      element.disabled = true;
     });
   });
 }
