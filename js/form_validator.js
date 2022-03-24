@@ -81,7 +81,7 @@ function validatePrice(value) {
   validateType(document.querySelector('#type').value);
   const priceBlock= document.querySelector('#price');
   const priceMin = priceBlock.getAttribute('min');
-  return Number(value) > Number(priceMin);
+  return Number(value) >= Number(priceMin);
 }
 
 function validatePriceTextError() {
