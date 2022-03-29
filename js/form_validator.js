@@ -65,7 +65,7 @@ function validateCapacityTextError(value) {
 
 function validateType(value) {
   const priceBlock = document.querySelector('#price');
-  const priceForType = {
+  const PriceForType = {
     'bungalow': 0,
     'flat': 1000,
     'hotel': 3000,
@@ -73,8 +73,8 @@ function validateType(value) {
     'palace': 10000
   };
 
-  priceBlock.setAttribute('placeholder', priceForType[value]);
-  priceBlock.setAttribute('min', priceForType[value]);
+  priceBlock.setAttribute('placeholder', PriceForType[value]);
+  priceBlock.setAttribute('min', PriceForType[value]);
 }
 
 function validatePrice(value) {

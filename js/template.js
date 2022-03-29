@@ -75,14 +75,15 @@ function getOfferCard(offerElement) {
   cardOffer.querySelector('.popup__type').textContent = getType(offerElement.offer.type);
   cardOffer.querySelector('.popup__text--capacity').textContent = getCapacity(offerElement.offer.rooms, offerElement.offer.guests);
   cardOffer.querySelector('.popup__text--time').textContent = getChek(offerElement.offer.checkin, offerElement.offer.checkout);
-  cardOffer.querySelector('.popup__features').replaceWith(getFeatures(offerElement.offer.features));
+  if(offerElement.offer.features) {
+    cardOffer.querySelector('.popup__features').replaceWith(getFeatures(offerElement.offer.features));
+  }
   cardOffer.querySelector('.popup__photos').replaceWith(getPhotos(offerElement.offer.photos));
   cardOffer.querySelector('.popup__description').textContent = offerElement.offer.description;
   cardOffer.querySelector('.popup__avatar').src = offerElement.author.avatar;
 
-  document.querySelector('#map-canvas').appendChild(cardOffer);
+  return cardOffer;
 }
-
 
 export {getOfferCard};
 
