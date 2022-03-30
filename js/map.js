@@ -8,14 +8,6 @@ function setAdress(marker) {
   address.value = `${marker.getLatLng().lat.toFixed(5)}, ${marker.getLatLng().lng.toFixed(5)}`;
 }
 
-function getAddress(cardOffer) {
-  const latLng = cardOffer.offer.address.split(', ');
-  for(let i = 0; i < latLng.length;  i++){
-    latLng[i] = Number(latLng[i]);
-  }
-  return latLng;
-}
-
 const map = L.map('map-canvas')
   .on('load', () => {
     activateForm();
@@ -66,11 +58,10 @@ mainPinMarker
 
 
 cardOffers.forEach((cardOffer) => {
-  const latLng = getAddress(cardOffer);
   const marker = L.marker(
     {
-      lat: latLng[0],
-      lng: latLng[1],
+      lat: cardOffer.location.lat,
+      lng: cardOffer.location.lng,
     },
     {
       pinIcon,
