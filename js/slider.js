@@ -7,7 +7,7 @@ noUiSlider.create(sliderElement, {
     max: 100000,
   },
   start: 5000,
-  step: 100,
+  step: 1,
   connect: 'lower',
   format: {
     to: function (value) {

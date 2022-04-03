@@ -75,16 +75,79 @@ function getOfferCard(offerElement) {
   cardOffer.querySelector('.popup__type').textContent = getType(offerElement.offer.type);
   cardOffer.querySelector('.popup__text--capacity').textContent = getCapacity(offerElement.offer.rooms, offerElement.offer.guests);
   cardOffer.querySelector('.popup__text--time').textContent = getChek(offerElement.offer.checkin, offerElement.offer.checkout);
+
   if(offerElement.offer.features) {
     cardOffer.querySelector('.popup__features').replaceWith(getFeatures(offerElement.offer.features));
+  } else {
+    cardOffer.querySelector('.popup__features').replaceWith('');
   }
-  cardOffer.querySelector('.popup__photos').replaceWith(getPhotos(offerElement.offer.photos));
-  cardOffer.querySelector('.popup__description').textContent = offerElement.offer.description;
+
+  if(offerElement.offer.photos) {
+    cardOffer.querySelector('.popup__photos').replaceWith(getPhotos(offerElement.offer.photos));
+  } else {
+    cardOffer.querySelector('.popup__photos').replaceWith('');
+  }
+
+  if(offerElement.offer.photos) {
+    cardOffer.querySelector('.popup__description').textContent = offerElement.offer.description;
+  } else {
+    cardOffer.querySelector('.popup__description').replaceWith('');
+  }
+
   cardOffer.querySelector('.popup__avatar').src = offerElement.author.avatar;
 
   return cardOffer;
 }
 
-export {getOfferCard};
+function getSuccess(message) {
+  const successTempate = document.querySelector('#success').content.querySelector('.success');
+  const success = successTempate.cloneNode(true);
+  if(message) {
+    success.querySelector('.success__message').textContent = message;
+  }
+
+  document.querySelector('body').appendChild(success);
+
+  success.addEventListener('click', () => {
+    success.remove();
+  });
+
+  window.addEventListener('keyup', (event) => {
+    if(event.key === 'Escape') {
+      success.remove();
+    }
+  });
+}
+
+function getError(message, messageButton) {
+  const errorTempate = document.querySelector('#error').content.querySelector('.error');
+  const error = errorTempate.cloneNode(true);
+  if(message) {
+    error.querySelector('.error__message').textContent = message;
+  }
+
+  if(messageButton) {
+    error.querySelector('.error__button').textContent = messageButton;
+  }
+
+  document.querySelector('body').appendChild(error);
+
+  error.querySelector('.error__button').addEventListener('click', () => {
+    error.remove();
+  });
+
+  error.addEventListener('click', () => {
+    error.remove();
+  });
+
+  window.addEventListener('keyup', (event) => {
+    if(event.key === 'Escape') {
+      error.remove();
+    }
+  });
+}
+
+
+export {getOfferCard, getSuccess, getError};
 
 
