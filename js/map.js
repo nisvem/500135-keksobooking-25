@@ -61,7 +61,7 @@ function createMarker(cardOffer) {
     .bindPopup(getOfferCard(cardOffer));
 }
 
-function getDefaultMarker() {
+function setDefaultMarker() {
   mainPinMarker.setLatLng(defaultLatLng);
   map.setView(defaultLatLng, defaultScale);
   setAdress(mainPinMarker);
@@ -76,4 +76,4 @@ mainPinMarker
   });
 
 
-export {createMarker, getDefaultMarker};
+export {createMarker, setDefaultMarker};

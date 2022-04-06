@@ -1,5 +1,6 @@
 import {sendData} from './load.js';
-import {getDefaultMarker} from './map.js';
+import {setDefaultMarker} from './map.js';
+import {getSuccess, getError} from './template.js';
 
 function validateRoomNumber (value) {
   const capacityValue = document.querySelector('#capacity').value;
@@ -177,17 +178,23 @@ form.addEventListener('submit', (evt) => {
   if (isValid) {
     blockSubmitButton();
     sendData(
-      () => {
-        unblockSubmitButton();
-        form.reset();
-      },
       new FormData(evt.target),
-    );
+    )
+      .then((response) => {
+        if (response.ok) {
+          unblockSubmitButton();
+          form.reset();
+          getSuccess();
+        } else {
+          throw new Error(`${response.status} — ${response.statusText}`);
+        }
+      })
+      .catch(() => getError());
   }
 });
 
 reserButton.addEventListener('click', () => {
-  getDefaultMarker();
+  setDefaultMarker();
   form.reset();
 });
 
