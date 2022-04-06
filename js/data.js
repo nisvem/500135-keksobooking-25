@@ -1,5 +1,6 @@
 import {getRandomPositiveInteger, getRandomPositiveFloat} from './util.js';
 
+
 function getAuthor(num) {
   return {
     avatar: `img/avatars/user${(num < 10)? `0${num}`: num}.png`
@@ -85,7 +86,6 @@ function getId(n) {
   return authorId;
 }
 
-
 const authorsId = getId(10);
 
 const cardOffers = [
@@ -101,5 +101,6 @@ const cardOffers = [
   getOffer('Квартира 10', 'Описание кварты 10', authorsId[9]),
 ];
 
-
 export {cardOffers};
+
+

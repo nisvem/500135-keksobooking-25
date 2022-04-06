@@ -1,3 +1,7 @@
+import {sendData} from './load.js';
+import {setDefaultMarker} from './map.js';
+import {getSuccess, getError} from './template.js';
+
 function validateRoomNumber (value) {
   const capacityValue = document.querySelector('#capacity').value;
   switch(value) {
@@ -75,6 +79,8 @@ function validateType(value) {
 
   priceBlock.setAttribute('placeholder', PriceForType[value]);
   priceBlock.setAttribute('min', PriceForType[value]);
+
+  return true;
 }
 
 function validatePrice(value) {
@@ -96,6 +102,8 @@ function validateTime(value) {
 
   timeinValue.value = value;
   timeoutValue.value =value;
+
+  return true;
 }
 
 const form = document.querySelector('.ad-form');
@@ -105,6 +113,8 @@ const type = form.querySelector('#type');
 const timein = form.querySelector('#timein');
 const timeout = form.querySelector('#timeout');
 const price = form.querySelector('#price');
+const submitButton = form.querySelector('.ad-form__submit');
+const reserButton = form.querySelector('.ad-form__reset');
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
@@ -147,16 +157,45 @@ pristine.addValidator(
   validateTime
 );
 
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Сохранить';
+};
+
+
 form.addEventListener('submit', (evt) => {
-
   const isValid = pristine.validate();
-  if (isValid) {
-    // eslint-disable-next-line no-console
-    console.log('Можно отправлять');
-  } else {
-    evt.preventDefault();
 
-    // eslint-disable-next-line no-console
-    console.log('Форма невалидна');
+  evt.preventDefault();
+
+
+  if (isValid) {
+    blockSubmitButton();
+    sendData(
+      new FormData(evt.target),
+    )
+      .then((response) => {
+        if (response.ok) {
+          unblockSubmitButton();
+          form.reset();
+          getSuccess();
+        } else {
+          throw new Error(`${response.status} — ${response.statusText}`);
+        }
+      })
+      .catch(() => getError());
   }
 });
+
+reserButton.addEventListener('click', () => {
+  setDefaultMarker();
+  form.reset();
+});
+
+

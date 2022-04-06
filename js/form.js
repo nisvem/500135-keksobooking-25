@@ -9,6 +9,10 @@ function activateForm() {
       element.disabled = false;
     });
   });
+
+  document.querySelector('#map-canvas').childNodes.forEach((block)=> {
+    block.style.display = 'block';
+  });
 }
 
 function deactivateForm() {
@@ -20,6 +24,11 @@ function deactivateForm() {
       element.disabled = true;
     });
   });
+
+  document.querySelector('#map-canvas').childNodes.forEach((block)=> {
+    block.style.display = 'none';
+  });
+
 }
 
 export {activateForm, deactivateForm};
