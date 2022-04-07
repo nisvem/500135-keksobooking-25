@@ -1,5 +1,5 @@
 import {sendData} from './load.js';
-import {setDefaultMarker} from './map.js';
+import {setDefaultMap} from './map.js';
 import {getSuccess, getError} from './template.js';
 
 function validateRoomNumber (value) {
@@ -194,7 +194,7 @@ form.addEventListener('submit', (evt) => {
 });
 
 reserButton.addEventListener('click', () => {
-  setDefaultMarker();
+  setDefaultMap();
   form.reset();
 });
 
