@@ -7,4 +7,4 @@ import './map.js';
 // eslint-disable-next-line no-unused-vars
 import {activateForm, deactivateForm} from './form.js';
 
-
+import './avatar.js';
