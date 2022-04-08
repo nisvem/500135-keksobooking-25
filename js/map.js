@@ -1,7 +1,7 @@
-import {activateForm} from './form.js';
-import {getOfferCard} from './template.js';
-import {renderMap} from './main.js';
-
+import {getOfferCard, getError} from './template.js';
+import {getData} from './load.js';
+import {activateForm, deactivateForm} from './form.js';
+import {getFilterOffers} from './filters.js';
 
 const address = document.querySelector('#address');
 const defaultLatLng = {
@@ -9,7 +9,6 @@ const defaultLatLng = {
   lng: 139.692,
 };
 const defaultScale = 10;
-const MARKER_OFFER_COUNT = 10;
 
 const pinIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -49,70 +48,7 @@ function setAdress(marker) {
   address.setAttribute('value', `${marker.getLatLng().lat.toFixed(5)}, ${marker.getLatLng().lng.toFixed(5)}`);
 }
 
-function filterSelect(value, filterValue) {
-  return filterValue === 'any' || String(value) === filterValue;
-}
-
-function filterPrice(value, filterValue) {
-  const valueNumber = Number(value);
-  switch (filterValue) {
-    case 'any':
-      return true;
-
-    case 'middle':
-      return (valueNumber >= 10000 && valueNumber <= 50000);
-
-    case 'low':
-      return (valueNumber < 10000);
-
-    case 'high':
-      return (valueNumber > 50000);
-  }
-}
-
-function filterFeatures(orders, housingFeatures) {
-  if(orders === undefined) {
-    return housingFeatures.length === 0;
-  }
-
-  let filterMark = 0;
-
-  for (let i = 0; i < orders.length; i++) {
-    for (let j = 0; j < housingFeatures.length; j++) {
-      if(orders[i] === housingFeatures[j]) {
-        filterMark++;
-      }
-    }
-  }
-  return filterMark === housingFeatures.length;
-}
-
-
-function getFilterOffers(orders) {
-  const housingFilter = document.querySelector('.map__filters');
-  const housingTypeValue = housingFilter.querySelector('#housing-type').value;
-  const housingPriceValue = housingFilter.querySelector('#housing-price').value;
-  const housingRoomsValue = housingFilter.querySelector('#housing-rooms').value;
-  const housingGuestsValue = housingFilter.querySelector('#housing-guests').value;
-  const housingFeatures = [];
-  housingFilter.querySelectorAll('#housing-features .map__checkbox[name="features"]').forEach((element) => {
-    if(element.checked) {
-      housingFeatures.push(element.value);
-    }
-  });
-
-  const filterOrders = orders
-    .filter((order) => filterSelect(order.offer.type, housingTypeValue))
-    .filter((order) => filterPrice(order.offer.price, housingPriceValue))
-    .filter((order) => filterSelect(order.offer.rooms, housingRoomsValue))
-    .filter((order) => filterSelect(order.offer.guests, housingGuestsValue))
-    .filter((order) => filterFeatures(order.offer.features, housingFeatures));
-
-  return filterOrders.slice(0, MARKER_OFFER_COUNT);
-}
-
 function createMarkers(offersData) {
-  // const offers = offersData.slice(0, MARKER_OFFER_COUNT);
   const offers = getFilterOffers(offersData);
   offers.forEach((cardOffer) => {
     const marker = L.marker(
@@ -134,6 +70,24 @@ function clearMap() {
   markerGroup.clearLayers();
 }
 
+function renderMap() {
+  deactivateForm();
+  getData()
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+
+      throw new Error(`${response.status} — ${response.statusText}`);
+    })
+    .then((offersData) => {
+      createMarkers(offersData);
+      activateForm();
+    })
+    .catch(() => getError('Oшибка при загрузке данных.', 'Понятно'));
+}
+
+
 function setDefaultMap() {
   mainPinMarker.setLatLng(defaultLatLng);
   map.setView(defaultLatLng, defaultScale);
@@ -141,7 +95,6 @@ function setDefaultMap() {
   document.querySelector('.map__filters').reset();
   clearMap();
   renderMap();
-
 }
 
 setAdress(mainPinMarker);
@@ -153,4 +106,4 @@ mainPinMarker
   });
 
 
-export {createMarkers, clearMap, setDefaultMap};
+export {setDefaultMap, renderMap, clearMap};
