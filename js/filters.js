@@ -6,20 +6,19 @@ const selects = document.querySelectorAll('.map__filter');
 const features = document.querySelectorAll('#housing-features .map__checkbox[name="features"]');
 const MARKER_OFFER_COUNT = 10;
 
-for(let i = 0; i < selects.length; i++) {
-  selects[i].addEventListener('change', debounce(() => {
+selects.forEach((select) => {
+  select.addEventListener('change', debounce(() => {
     clearMap();
     renderMap();
   }));
-}
+});
 
-for(let i = 0; i < features.length; i++) {
-  features[i].addEventListener('change', debounce(() => {
+features.forEach((feature) => {
+  feature.addEventListener('change', debounce(() => {
     clearMap();
     renderMap();
   }));
-}
-
+});
 
 function getFilterOffers(orders) {
   const housingFilter = document.querySelector('.map__filters');

@@ -189,7 +189,10 @@ form.addEventListener('submit', (evt) => {
           throw new Error(`${response.status} — ${response.statusText}`);
         }
       })
-      .catch(() => getError());
+      .catch(() => getError())
+      .finally(() => {
+        unblockSubmitButton();
+      });
   }
 });
 
