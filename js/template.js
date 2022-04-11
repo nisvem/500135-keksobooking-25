@@ -1,22 +1,13 @@
 function getType(type) {
-  switch(type) {
-    case 'flat':
-      return 'Квартира';
+  const answer = {
+    'flat': 'Квартира',
+    'bungalow': 'Бунгало',
+    'house': 'Дом',
+    'palace': 'Дворец',
+    'hotel': 'Отель',
+  };
 
-    case 'bungalow':
-      return 'Бунгало';
-
-    case 'house':
-      return 'Дом';
-
-    case 'palace':
-      return 'Дворец';
-    case 'hotel':
-      return 'Отель ';
-
-    default:
-      return 'Другое';
-  }
+  return answer[type] || 'Другое';
 }
 
 function getChek(checkin, checkout) {
@@ -108,15 +99,20 @@ function getSuccess(message) {
 
   document.querySelector('body').appendChild(success);
 
-  success.addEventListener('click', () => {
-    success.remove();
-  });
-
-  window.addEventListener('keyup', (event) => {
+  const listenerEscape = (event) => {
     if(event.key === 'Escape') {
       success.remove();
+      window.removeEventListener('keyup', listenerEscape);
     }
+  };
+
+  success.addEventListener('click', () => {
+    success.remove();
+    window.removeEventListener('keyup', listenerEscape);
   });
+
+  window.addEventListener('keyup', listenerEscape);
+
 }
 
 function getError(message, messageButton) {
@@ -136,15 +132,19 @@ function getError(message, messageButton) {
     error.remove();
   });
 
-  error.addEventListener('click', () => {
-    error.remove();
-  });
-
-  window.addEventListener('keyup', (event) => {
+  const listenerEscape = (event) => {
     if(event.key === 'Escape') {
       error.remove();
+      window.removeEventListener('keyup', listenerEscape);
     }
+  };
+
+  error.addEventListener('click', () => {
+    error.remove();
+    window.removeEventListener('keyup', listenerEscape);
   });
+
+  window.addEventListener('keyup', listenerEscape);
 }
 
 

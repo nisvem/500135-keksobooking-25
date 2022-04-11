@@ -5,6 +5,7 @@ import {renderMap, clearMap} from './map.js';
 const selects = document.querySelectorAll('.map__filter');
 const features = document.querySelectorAll('#housing-features .map__checkbox[name="features"]');
 const MARKER_OFFER_COUNT = 10;
+const filterAnyValue = 'any';
 
 selects.forEach((select) => {
   select.addEventListener('change', debounce(() => {
@@ -33,14 +34,20 @@ function getFilterOffers(orders) {
     }
   });
 
-  const filterOrders = orders
-    .filter((order) => filterSelect(order.offer.type, housingTypeValue))
-    .filter((order) => filterPrice(order.offer.price, housingPriceValue))
-    .filter((order) => filterSelect(order.offer.rooms, housingRoomsValue))
-    .filter((order) => filterSelect(order.offer.guests, housingGuestsValue))
-    .filter((order) => filterFeatures(order.offer.features, housingFeatures));
+  const filterOrders = [];
 
-  return filterOrders.slice(0, MARKER_OFFER_COUNT);
+  for(let i=0, a=0; i < MARKER_OFFER_COUNT && a < orders.length; a++) {
+    if(filterSelect(orders[a].offer.type, housingTypeValue) &&
+      filterPrice(orders[a].offer.price, housingPriceValue) &&
+      filterSelect(orders[a].offer.rooms, housingRoomsValue) &&
+      filterSelect(orders[a].offer.guests, housingGuestsValue) &&
+      filterFeatures(orders[a].offer.features, housingFeatures)
+    ) {
+      filterOrders.push(orders[a]);
+      i++;
+    }
+  }
+  return filterOrders;
 }
 
 
@@ -61,26 +68,20 @@ function filterFeatures(orders, housingFeatures) {
   return filterMark === housingFeatures.length;
 }
 
-
 function filterSelect(value, filterValue) {
-  return filterValue === 'any' || String(value) === filterValue;
+  return filterValue === filterAnyValue || String(value) === filterValue;
 }
 
 function filterPrice(value, filterValue) {
   const valueNumber = Number(value);
-  switch (filterValue) {
-    case 'any':
-      return true;
+  const valuePrice = {
+    'middle': valueNumber >= 10000 && valueNumber <= 50000,
+    'low': valueNumber < 10000,
+    'high': valueNumber > 50000,
+    'any': true
+  };
 
-    case 'middle':
-      return (valueNumber >= 10000 && valueNumber <= 50000);
-
-    case 'low':
-      return (valueNumber < 10000);
-
-    case 'high':
-      return (valueNumber > 50000);
-  }
+  return valuePrice[filterValue] || '';
 }
 
 export {getFilterOffers};
