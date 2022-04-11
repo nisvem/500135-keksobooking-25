@@ -2,6 +2,28 @@ import {sendData} from './load.js';
 import {setDefaultMap} from './map.js';
 import {getSuccess, getError} from './template.js';
 
+const answersCapacity = {
+  '1': 'Нужно выбрать 1, 2 или 3 комнаты',
+  '2': 'Нужно выбрать 2 или 3 комнаты',
+  '3': 'Нужно выбрать 3 комнаты',
+  '0': 'Нужно выбрать 100 комнат'
+};
+
+const answersRoomNumber = {
+  '1': 'Только для 1 гостя',
+  '2': 'Для 1 или 2 гостей',
+  '3': 'Для 1, 2 или 3 гостей',
+  '100': 'Не для гостей'
+};
+
+const PriceForType = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000
+};
+
 function validateRoomNumber (value) {
   const capacityValue = document.querySelector('#capacity').value;
   switch(value) {
@@ -17,66 +39,34 @@ function validateRoomNumber (value) {
     case '100':
       return capacityValue === '0';
 
-
     default:
       return false;
   }
 }
 
 function validateRoomNumberTextError(value) {
-
-  const answers = {
-    '1': 'Только для 1 гостя',
-    '2': 'Для 1 или 2 гостей',
-    '3': 'Для 1, 2 или 3 гостей',
-    '100': 'Не для гостей'
-  };
-
-  return answers[value] || '';
+  return answersRoomNumber[value] || '';
 }
 
 function validateCapacity (value) {
   const roomNumberValue = document.querySelector('#room_number').value;
-  switch(value) {
-    case '1':
-      return ['1', '2', '3'].includes(roomNumberValue);
 
-    case '2':
-      return ['2', '3'].includes(roomNumberValue);
+  const answersNumberValue = {
+    '1': ['1', '2', '3'].includes(roomNumberValue),
+    '2': ['2', '3'].includes(roomNumberValue),
+    '3': roomNumberValue === '3',
+    '0': roomNumberValue === '100'
+  };
 
-    case '3':
-      return roomNumberValue === '3';
-
-    case '0':
-      return roomNumberValue === '100';
-
-    default:
-      return false;
-  }
-
+  return answersNumberValue[value] || false;
 }
 
 function validateCapacityTextError(value) {
-  const answers = {
-    '1': 'Нужно выбрать 1, 2 или 3 комнаты',
-    '2': 'Нужно выбрать 2 или 3 комнаты',
-    '3': 'Нужно выбрать 3 комнаты',
-    '0': 'Нужно выбрать 100 комнат'
-  };
-
-  return answers[value] || '';
+  return answersCapacity[value] || '';
 }
 
 function validateType(value) {
   const priceBlock = document.querySelector('#price');
-  const PriceForType = {
-    'bungalow': 0,
-    'flat': 1000,
-    'hotel': 3000,
-    'house': 5000,
-    'palace': 10000
-  };
-
   priceBlock.setAttribute('placeholder', PriceForType[value]);
   priceBlock.setAttribute('min', PriceForType[value]);
 
